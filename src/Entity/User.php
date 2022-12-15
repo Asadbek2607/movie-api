@@ -7,7 +7,9 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\Component\User\UserFullNameDto;
 use App\Controller\User\UserCreateAction;
+use App\Controller\User\UserFullNameAction;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -20,6 +22,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         uriTemplate: 'users/my',
         controller: UserCreateAction::class,
         name: 'createUser'
+    ),
+    new Post(
+        uriTemplate: '/users/full-name',
+        controller: UserFullNameAction::class,
+        input: UserFullNameDto::class,
+        name: 'full-name'
     ),
     new Get(),
     new Delete()
