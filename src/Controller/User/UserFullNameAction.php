@@ -11,11 +11,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class UserFullNameAction extends AbstractController
 {
-    public function __invoke(Request $request, SerializerInterface $serializer)
-    {
-        $data = $serializer->deserialize($request->getContent(), UserFullNameDto::class, 'json');
-        print_r($data);
+    //to get user data and convert it PHP object
 
-        exit();
+    public function __invoke(Request $request, SerializerInterface $serializer): UserFullNameDto
+    {
+        return $serializer->deserialize($request->getContent(), UserFullNameDto::class, 'json');
     }
 }

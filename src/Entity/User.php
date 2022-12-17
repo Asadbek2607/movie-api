@@ -16,22 +16,23 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource(operations: [
-    new GetCollection(),
-    new Post(
-        uriTemplate: 'users/my',
-        controller: UserCreateAction::class,
-        name: 'createUser'
-    ),
-    new Post(
-        uriTemplate: '/users/full-name',
-        controller: UserFullNameAction::class,
-        input: UserFullNameDto::class,
-        name: 'full-name'
-    ),
-    new Get(),
-    new Delete()
-],
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Post(
+            uriTemplate: '/users/my',
+            controller: UserCreateAction::class,
+            name: 'createUser'
+        ),
+        new Post(
+            uriTemplate: '/users/full-name',
+            controller: UserFullNameAction::class,
+            input: UserFullNameDto::class,
+            name: 'fullName'
+        ),
+        new Get(),
+        new Delete(),
+    ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']]
 )]

@@ -13,6 +13,8 @@ class UserManager
     {
     }
 
+    // Save data temporarily and then save permanently
+
     public function save(User $user, bool $isNeedFlush = false):void
     {
         $this->entityManager->persist($user);

@@ -9,13 +9,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class UserFullNameDto
 {
     public function __construct(
-        #[Groups('user:write')]
+        #[Groups(['user:write', 'user:read'])]
         private string $givenName,
 
-        #[Groups('user:write')]
+        #[Groups(['user:write', 'user:read'])]
         private string $familyName,
 
-        #[Groups('user:write')]
+        #[Groups(['user:write', 'user:read'])]
         private int $age
     ) {
     }

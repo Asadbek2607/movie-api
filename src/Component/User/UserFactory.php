@@ -13,6 +13,8 @@ class UserFactory
     {
     }
 
+    // to create user object and encrypt password
+
     public function create(string $email, string $password): User
     {
         $user = new User();
