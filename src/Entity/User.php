@@ -13,6 +13,7 @@ use App\Controller\User\UserFullNameAction;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -30,13 +31,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
             input: UserFullNameDto::class,
             name: 'fullName'
         ),
+        new Post(
+            uriTemplate: '/users/auth',
+            name: 'auth-users'
+        ),
         new Get(),
         new Delete(),
     ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']]
 )]
-class  User implements PasswordAuthenticatedUserInterface
+class  User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -79,5 +84,25 @@ class  User implements PasswordAuthenticatedUserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string)$this->getId();
+    }
+
+    public function getUserName():string
+    {
+        return $this->getEmail();
     }
 }
