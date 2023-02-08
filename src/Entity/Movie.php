@@ -1,16 +1,34 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\Controller\Movie\MovieDeleteAction;
 use App\Repository\MovieRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Post(),
+        new Put(),
+        new Delete(
+            uriTemplate: '/movies/{id}',
+            controller: MovieDeleteAction::class,
+            name: 'softDelete'
+        ),
+        new Get(),
+    ],
     normalizationContext: ['groups' => ['movie:read']],
     denormalizationContext: ['groups' => ['movie:write']]
 )]
@@ -21,7 +39,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     'text' => 'partial',
     'category' => 'exact'
 ])]
-
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false, hardDelete: true)]
 class Movie
 {
     #[ORM\Id]
@@ -46,6 +64,9 @@ class Movie
     #[ORM\Column]
     #[Groups(['movie:read', 'movie:write'])]
     private ?int $year = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $deletedAt = null;
 
     public function getId(): ?int
     {
@@ -99,4 +120,17 @@ class Movie
 
         return $this;
     }
+
+    public function getDeletedAt(): ?\DateTimeImmutable
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeImmutable $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+    
 }
