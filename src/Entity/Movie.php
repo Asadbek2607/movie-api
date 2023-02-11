@@ -49,7 +49,7 @@ class Movie
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['movie:read', 'movie:write'])]
+    #[Groups(['movie:read', 'movie:write', 'category:write'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]

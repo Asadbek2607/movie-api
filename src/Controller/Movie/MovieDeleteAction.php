@@ -17,7 +17,7 @@ class MovieDeleteAction extends AbstractController
     public function __invoke(Movie $movie):void
     {
 
-        $this->movieSoftDeleter->softDelete($movie,true);
+        $this->movieSoftDeleter->softDelete($movie);
 
     }
 }
