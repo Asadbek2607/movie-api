@@ -30,7 +30,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
         new Get(),
     ],
     normalizationContext: ['groups' => ['movie:read']],
-    denormalizationContext: ['groups' => ['movie:write','media_object:write']],
+    denormalizationContext: ['groups' => ['movie:write']],
 )]
 #[ApiFilter(SearchFilter::class, properties: [
     'id' => 'exact',
@@ -69,8 +69,13 @@ class Movie
     private ?\DateTimeImmutable $deletedAt = null;
 
     #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
     #[Groups(['movie:read', 'movie:write'])]
     private ?MediaObject $cardImage = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['movie:read', 'movie:write'])]
+    private ?int $rating = null;
 
     public function getId(): ?int
     {
@@ -145,6 +150,18 @@ class Movie
     public function setCardImage(?MediaObject $cardImage): self
     {
         $this->cardImage = $cardImage;
+
+        return $this;
+    }
+
+    public function getRating(): ?int
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?int $rating): self
+    {
+        $this->rating = $rating;
 
         return $this;
     }
