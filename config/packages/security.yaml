@@ -21,11 +21,11 @@ security:
             security: false
         
         # /api/categories endpoint'iga GET orqali murojaat qilinganda - token so'ralmasin.
-        categories:
-            pattern: ^/api/categories
-            methods:
-                - get
-            security: false
+        # categories:
+        #     pattern: ^/api/categories
+        #     methods:
+        #         - get
+        #     security: false
 
         main:
             stateless: true
